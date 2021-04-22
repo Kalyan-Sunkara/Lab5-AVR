@@ -22,7 +22,7 @@ int main(void) {
 //	unsigned char total = 0;
 	unsigned char tmpA = 0;
     while (1) {
-	tmpA = PINA & 0x0F;
+	tmpA = (!PINA) & 0x0F;
 	if(tmpA == 0){
 		PORTC = 0x40;
 	}
