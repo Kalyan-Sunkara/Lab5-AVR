@@ -21,7 +21,7 @@ void SMTick(){
 			if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_start;	
 			}
-			else if(~PINA == 0x01){
+			else if((~PINA & 0x01) == 0x01){
 				Festive_State = Festive_triplet1;
 			}
 			else{}

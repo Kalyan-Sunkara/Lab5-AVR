@@ -15,11 +15,11 @@
 # that they are not ran in isolation but in the order shown and the state of the device is not reset or 
 # altered in between executions (unless preconditions are used).
 tests = [ {'description': 'Initial State => PortC = 0x3F',
-    'steps': [ {'inputs': [('PINA',0x01)], 'iterations': 5 } ],
+    'steps': [ {'inputs': [('PINA',0x0E)], 'iterations': 5 } ],
     'expected': [('PORTC',0x02)],
     },
     {'description': 'change => PortB = 0x15',
-    'steps': [ {'inputs': [('PINA',0x01)], 'iterations': 5 }, 
+    'steps': [ {'inputs': [('PINA',0x0E)], 'iterations': 5 }, 
 	],
     'expected': [('PORTB',0x15)],
     },
