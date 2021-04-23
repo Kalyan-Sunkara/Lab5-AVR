@@ -61,7 +61,7 @@ void SMTick(){
 			break;
 		case Festive_triplet2_wait:
 			if((~PINA & 0x01) == 0x01){
-				Festive_State = Festive_start;
+				Festive_State = Festive_stop;
 			}
 			else if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_triplet2_wait;
@@ -71,6 +71,12 @@ void SMTick(){
 			}
 			break;
 		case Festive_stop:
+			if((~PINA & 0x01) == 0x01){
+				Festive_State = Festive_stop;
+			}
+			else{
+				Festive_State = Festive_start;
+			}
 			break;
 		default:
 			Festive_State = Festive_SMStart;
@@ -93,6 +99,7 @@ void SMTick(){
 		case Festive_triplet2_wait:
 			break;
 		case Festive_stop:
+			PORTB = 0x3F;
 			break;
 		default:
 			break;
