@@ -78,7 +78,7 @@ void SMTick(){
  		case Festive_SMStart:
 			break;
 		case Festive_start:
-			PORTB = 0x00;
+			PORTB = 0x3F;
 			break;
 		case Festive_triplet1:
 			PORTB = 0x15;
