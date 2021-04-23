@@ -11,7 +11,7 @@
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
 #endif
-enum Counter_States {Counter_SMStart, Counter_start, Counter_add, Counter_sub, Counter_reset, Counter_wait, Counter_addWait, Counter_subWait} Counter_State;
+enum Counter_States {Counter_SMStart, Counter_start} Counter_State;
 void SMTick(){
 	switch(Counter_State){
 		case Counter_SMStart:
@@ -19,75 +19,6 @@ void SMTick(){
 			break;
 		case Counter_start:
 			Counter_State =  Counter_wait;
-			break;
-		case Counter_wait:
-			if((~PINA & 0x01) && !(~PINA & 0x02)){
-				Counter_State = Counter_add;
-			}
-			else if(!(~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State = Counter_sub;
-			}
-			else if((~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State  = Counter_reset;
-			}
-			else{
-				Counter_State = Counter_wait;	
-			}
-			break;
-	 	case Counter_add:
-			if(!(~PINA & 0x01)){
-                                Counter_State = Counter_wait;
-                        }
-			else if((~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State = Counter_reset;
-			}
-// 			else if((PINA & 0x01) && !(PINA & 0x02)){
-// 				Counter_State = Counter_addWait
-// 			}
-                        else{
-                                Counter_State = Counter_addWait;
-                        }
-                        break;
-		case  Counter_addWait:
-			if(!(~PINA & 0x01)){
-                                Counter_State = Counter_wait;
-                        }
-			else if((~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State = Counter_reset;
-			}
-			else{
-				Counter_State = Counter_addWait;
-			}
-			break;
-		case Counter_sub:
-			if(!(~PINA & 0x02)){
-                                Counter_State = Counter_wait;
-                        }
-			else if((~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State = Counter_reset;
-			}
-                        else{
-                                Counter_State = Counter_subWait;
-                        }
-                        break;
-		case  Counter_subWait:
-			if(!(~PINA & 0x02)){
-                                Counter_State = Counter_wait;
-                        }
-			else if((~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State = Counter_reset;
-			}
-			else{
-				Counter_State = Counter_subWait;
-			}
-				break;
-		case Counter_reset:
-			if((~PINA & 0x01) && (~PINA & 0x02)){
-				Counter_State = Counter_reset;	
-			}
-			else{
-				Counter_State = Counter_wait;	
-			}
 			break;
 		default:
 			Counter_State = Counter_SMStart;
@@ -98,25 +29,6 @@ void SMTick(){
 			break;
 		case Counter_start:
 			PORTC = 0x07;
-		case Counter_wait:
-			break;
-	 	case Counter_add:
-			if(PORTC < 9){
-				PORTC = PORTC + 1;	
-			}
-                        break;
-		case  Counter_addWait:
-			break;
-		case Counter_sub:
-			if(PORTC > 0){
-				PORTC = PORTC - 1;	
-			}
-			break;
-		case  Counter_subWait:
-			break;
-		case Counter_reset:
-			PORTC = 0x00;
-			break;
 		default:
 			break;
 		}
