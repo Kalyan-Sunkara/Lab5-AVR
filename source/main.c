@@ -103,11 +103,15 @@ int main(void) {
 
 	DDRB = 0xFF;
 	PORTB = 0x00;
+	
+	DDRC = 0xFF;
+	PORTC = 0x00;
     /* Insert your solution below */
 //	LED_State = LED_SMStart;
 	//Counter_State = Counter_start;
     while (1) {
 	SMTick();
+	PORTC = Festive_State;
     }
     return 1;
 }
