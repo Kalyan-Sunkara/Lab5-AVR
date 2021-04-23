@@ -18,7 +18,7 @@ void SMTick(){
 			Festive_State = Festive_start;
 			break;
 		case Festive_start:
-			if(~PINA == 0x00){
+			if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_start;	
 			}
 			else if(~PINA == 0x01){
@@ -27,10 +27,10 @@ void SMTick(){
 			else{}
 			break;
 		case Festive_triplet1:
-			if(~PINA == 0x01){
+			if((~PINA & 0x01) == 0x01){
 				Festive_State = Festive_triplet1;
 			}
-			else if(~PINA == 0x00){
+			else if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_triplet1_wait;
 			}
 			else{
@@ -38,10 +38,10 @@ void SMTick(){
 			}
 			break;
 		case Festive_triplet1_wait:
-			if(~PINA == 0x01){
+			if((~PINA & 0x01) == 0x01){
 				Festive_State = Festive_triplet2;
 			}
-			else if(~PINA == 0x00){
+			else if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_triplet1_wait;
 			}
 			else{
@@ -49,10 +49,10 @@ void SMTick(){
 			}
 			break;
 		case Festive_triplet2:
-			if(~PINA == 0x01){
+			if((~PINA & 0x01) == 0x01){
 				Festive_State = Festive_triplet2;
 			}
-			else if(~PINA == 0x00){
+			else if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_triplet2_wait;
 			}
 			else{
@@ -60,10 +60,10 @@ void SMTick(){
 			}
 			break;
 		case Festive_triplet2_wait:
-			if(~PINA == 0x01){
+			if((~PINA & 0x01) == 0x01){
 				Festive_State = Festive_start;
 			}
-			else if(~PINA == 0x00){
+			else if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_triplet2_wait;
 			}
 			else{
