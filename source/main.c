@@ -1,4 +1,4 @@
-/*	Author: lab
+/*	Author: ksunk001
  *  Partner(s) Name: 
  *	Lab Section:
  *	Assignment: Lab #  Exercise #
@@ -11,40 +11,130 @@
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
 #endif
+enum Counter_States {Counter_SMStart, Counter_start, Counter_add, Counter_sub, Counter_reset, Counter_wait, Counter_addWait, Counter_subWait} Counter_State;
+void SMTick(){
+	switch(Counter_State){
+		case Counter_SMStart:
+			Counter_State = Counter_start;
+			break;
+		case Counter_start:
+			Counter_State =  Counter_wait;
+			break;
+		case Counter_wait:
+			if((PINA & 0x01) && !(PINA & 0x02)){
+				Counter_State = Counter_add;
+			}
+			else if(!(PINA & 0x01) && (PINA & 0x02)){
+				Counter_State = Counter_sub;
+			}
+			else if((PINA & 0x01) && (PINA & 0x02)){
+				Counter_State  = Counter_reset;
+			}
+			else{
+				Counter_State = Counter_wait;	
+			}
+			break;
+	 	case Counter_add:
+			if(!(PINA & 0x01)){
+                                Counter_State = Counter_wait;
+                        }
+			else if((PINA & 0x01) && (PINA & 0x02)){
+				Counter_State = Counter_reset;
+			}
+// 			else if((PINA & 0x01) && !(PINA & 0x02)){
+// 				Counter_State = Counter_addWait
+// 			}
+                        else{
+                                Counter_State = Counter_addWait;
+                        }
+                        break;
+		case  Counter_addWait:
+			if(!(PINA & 0x01)){
+                                Counter_State = Counter_wait;
+                        }
+			else if((PINA & 0x01) && (PINA & 0x02)){
+				Counter_State = Counter_reset;
+			}
+			else{
+				Counter_State = Counter_addWait;
+			}
+			break;
+		case Counter_sub:
+			if(!(PINA & 0x02)){
+                                Counter_State = Counter_wait;
+                        }
+			else if((PINA & 0x01) && (PINA & 0x02)){
+				Counter_State = Counter_reset;
+			}
+                        else{
+                                Counter_State = Counter_subWait;
+                        }
+                        break;
+		case  Counter_subWait:
+			if(!(PINA & 0x02)){
+                                Counter_State = Counter_wait;
+                        }
+			else if((PINA & 0x01) && (PINA & 0x02)){
+				Counter_State = Counter_reset;
+			}
+			else{
+				Counter_State = Counter_subWait;
+			}
+				break;
+		case Counter_reset:
+			if((PINA & 0x01) && (PINA & 0x02)){
+				Counter_State = Counter_reset;	
+			}
+			else{
+				Counter_State = Counter_wait;	
+			}
+			break;
+		default:
+			Counter_State = Counter_SMStart;
+			break;
+	}
+	switch(Counter_State) {   // State actions
+ 		case Counter_SMStart:
+			break;
+		case Counter_start:
+			PORTC = 0x07;
+		case Counter_wait:
+			break;
+	 	case Counter_add:
+			if(PORTC < 9){
+				PORTC = PORTC + 1;	
+			}
+                        break;
+		case  Counter_addWait:
+			break;
+		case Counter_sub:
+			if(PORTC > 0){
+				PORTC = PORTC - 1;	
+			}
+			break;
+		case  Counter_subWait:
+			break;
+		case Counter_reset:
+			PORTC = 0x00;
+			break;
+		default:
+			break;
+		}
 
+
+}
 int main(void) {
     /* Insert DDR and PORT initializations */
 	DDRA = 0x00;
 	PORTA = 0xFF;
+
 	DDRC = 0xFF;
 	PORTC = 0x00;
     /* Insert your solution below */
-//	unsigned char total = 0;
-	unsigned char tmpA = 0;
+//	LED_State = LED_SMStart;
+	//Counter_State = Counter_start;
     while (1) {
-	tmpA = ~PINA & 0x0F;
-	//tmpA = (!tmpA) & 0x0F;
-	if(tmpA == 0){
-		PORTC = 0x40;
-	}
-	else if(tmpA < 3){
-		PORTC = 0x60;
-	}
-	else if(tmpA < 5){
-		PORTC = 0x70;
-	}
-	else if(tmpA < 7){
-                PORTC = 0x38;
-        }
-	else if(tmpA < 10){
-		PORTC = 0x3C;
-	}
-	else if(tmpA < 13){
-		PORTC = 0x3E;
-	}
-	else{
-		PORTC = 0x3F;
-	}		
-}	
+	SMTick();
+    }
     return 1;
 }
