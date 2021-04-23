@@ -61,7 +61,7 @@ void SMTick(){
 			break;
 		case Festive_triplet2_wait:
 			if((~PINA & 0x01) == 0x01){
-				Festive_State = Festive_stop;
+				Festive_State = Festive_top3;
 			}
 			else if((~PINA & 0x01) == 0x00){
 				Festive_State = Festive_triplet2_wait;
