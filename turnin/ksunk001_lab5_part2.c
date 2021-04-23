@@ -130,7 +130,7 @@ int main(void) {
 	PORTA = 0xFF;
 
 	DDRC = 0xFF;
-	PORTC = 0x00;
+	PORTC = 0x07;
     /* Insert your solution below */
 //	LED_State = LED_SMStart;
 	//Counter_State = Counter_start;
