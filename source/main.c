@@ -11,7 +11,7 @@
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
 #endif
-enum Festive_States {Festive_SMStart, Festive_start, Festive_triplet1, Festive_triplet1_wait, Festive_triplet2, Festive_triplet2_wait} Festive_State;
+enum Festive_States {Festive_SMStart, Festive_start_wait, Festive_start, Festive_triplet1, Festive_triplet1_wait, Festive_triplet2, Festive_triplet2_wait} Festive_State;
 void SMTick(){
 	switch(Festive_State){
 		case Festive_SMStart:
@@ -22,7 +22,7 @@ void SMTick(){
 				Festive_State = Festive_start;	
 			}
 			else if((~PINA & 0x01) == 0x01){
-				Festive_State = Festive_triplet1;
+				Festive_State = Festive_start_wait;
 			}
 			else{}
 			break;
@@ -70,6 +70,17 @@ void SMTick(){
 				Festive_State = Festive_start;
 			}
 			break;
+		case Festive_start_wait:
+			if((~PINA & 0x01) == 0x01){
+				Festive_State = Festive_start_wait;
+			}
+			else if((~PINA & 0x01) == 0x00){
+				Festive_State = Festive_triplet_1;
+			}
+			else{
+				Festive_State = Festive_start;
+			}
+			break;
 		default:
 			Festive_State = Festive_SMStart;
 			break;
@@ -89,6 +100,8 @@ void SMTick(){
 			PORTB = 0x2A;
 			break;
 		case Festive_triplet2_wait:
+			break;
+		case Festive_start_wait:
 			break;
 		default:
 			break;
