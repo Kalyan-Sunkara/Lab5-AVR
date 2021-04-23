@@ -133,7 +133,7 @@ int main(void) {
 	PORTC = 0x07;
     /* Insert your solution below */
 //	LED_State = LED_SMStart;
-	//Counter_State = Counter_start;
+	Counter_State = Counter_start;
     while (1) {
 	SMTick();
     }
