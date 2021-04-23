@@ -13,7 +13,7 @@
 #endif
 enum Festive_States {Festive_SMStart, Festive_start, Festive_triplet1, Festive_triplet1_wait, Festive_triplet2, Festive_triplet2_wait} Festive_State;
 void SMTick(){
-	switch(Counter_State){
+	switch(Festive_State){
 		case Festive_SMStart:
 			Festive_State = Festive_start;
 			break;
