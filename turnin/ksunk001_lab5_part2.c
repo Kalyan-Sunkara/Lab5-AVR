@@ -98,6 +98,7 @@ void SMTick(){
 			break;
 		case Counter_start:
 			PORTC = 0x07;
+			break;
 		case Counter_wait:
 			break;
 	 	case Counter_add:
